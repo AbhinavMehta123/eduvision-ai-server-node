@@ -1,6 +1,14 @@
 const axios = require('axios');
 
-const FLASK_URL = process.env.FLASK_AI_URL || 'http://127.0.0.1:8000/api/ai';
+// Defaults to your live deployed Python Flask Microservice on Render
+let rawFlaskUrl = process.env.FLASK_AI_URL || 'https://eduvision-ai-server-flask.onrender.com/api/ai';
+
+rawFlaskUrl = rawFlaskUrl.trim();
+if (!rawFlaskUrl.endsWith('/api/ai')) {
+  rawFlaskUrl = rawFlaskUrl.replace(/\/+$/, '') + '/api/ai';
+}
+
+const FLASK_URL = rawFlaskUrl;
 
 const flaskClient = axios.create({
   baseURL: FLASK_URL,
